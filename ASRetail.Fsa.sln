@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C2E4724-04FF-4022-AFAB-197AE526D2D5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ASRetail.Fsa.Cli", "src\ASRetail.Fsa.Cli\ASRetail.Fsa.Cli.fsproj", "{A063D40B-8FA4-4DDC-B6FD-8EFBDE6DD037}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED01738D-FD97-4D58-A753-3A35C2669466}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ASRetail.Fsa.Tests", "tests\ASRetail.Fsa.Tests\ASRetail.Fsa.Tests.fsproj", "{5E0CF919-CBDE-48AF-A118-66E00CCDAB60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +18,19 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A063D40B-8FA4-4DDC-B6FD-8EFBDE6DD037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A063D40B-8FA4-4DDC-B6FD-8EFBDE6DD037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A063D40B-8FA4-4DDC-B6FD-8EFBDE6DD037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A063D40B-8FA4-4DDC-B6FD-8EFBDE6DD037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E0CF919-CBDE-48AF-A118-66E00CCDAB60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E0CF919-CBDE-48AF-A118-66E00CCDAB60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E0CF919-CBDE-48AF-A118-66E00CCDAB60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E0CF919-CBDE-48AF-A118-66E00CCDAB60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A063D40B-8FA4-4DDC-B6FD-8EFBDE6DD037} = {6C2E4724-04FF-4022-AFAB-197AE526D2D5}
+		{5E0CF919-CBDE-48AF-A118-66E00CCDAB60} = {ED01738D-FD97-4D58-A753-3A35C2669466}
 	EndGlobalSection
 EndGlobal
