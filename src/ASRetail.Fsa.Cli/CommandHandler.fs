@@ -1,14 +1,14 @@
 module ASRetail.Fsa.Cli.CommandHandler
-open Argu 
+
+open Argu
 open System
 open FsToolkit.ErrorHandling
 
-[<NoEquality; NoComparison>]
-type Arguments = 
-    | [<MainCommand>] TextOrPath of string list
+[<NoEquality ; NoComparison>]
+type Arguments = | [<MainCommand>] TextOrPath of string list
 
-module Arguments = 
-    let ofArray = 
+module Arguments =
+    let ofArray =
         Option.ofObj
         >> Option.defaultValue [||]
         >> List.ofArray
@@ -20,54 +20,45 @@ module Arguments =
             function
             | TextOrPath content -> "Main Arguments:" :: content |> String.concat "\n\t"
 
-        args
-        |> List.head
-        |> toString
+        args |> List.head |> toString
 
-module ErrorMessages = 
-    let emptyOrNullMainArgument = "One or more of the main arguments was invalid since it was empty, null or whitespace."
+module ErrorMessages =
+    let emptyOrNullMainArgument =
+        "One or more of the main arguments was invalid since it was empty, null or whitespace."
 
 [<RequireQualifiedAccess>]
-type CliError = 
+type CliError =
     | MissingMainArgument
     | InvalidMainArgument of string
 
-type TextOrPath = 
-    private 
+type TextOrPath =
+    private
     | Text of string
-    | Path of string    
+    | Path of string
 
-type CliReport = private CliReport of string  
+type CliReport = private | CliReport of string
 
-module CliReport = 
+module CliReport =
     let zero = "" |> CliReport
 
     let toString (CliReport str) = str
 
-let private parseTextOrPath arg = 
-    if arg |> String.IsNullOrWhiteSpace then 
-        ErrorMessages.emptyOrNullMainArgument
-        |> CliError.InvalidMainArgument
-        |> Error
-        
-    else 
+let private parseTextOrPath arg =
+    if arg |> String.IsNullOrWhiteSpace then
+        ErrorMessages.emptyOrNullMainArgument |> CliError.InvalidMainArgument |> Error
+
+    else
         arg |> TextOrPath.Text |> Ok
 
-let private parseArgument = 
-    function 
-    | TextOrPath textOrPaths ->
-        textOrPaths 
-        |> List.traverseResultM parseTextOrPath
-        |> Result.ignore
+let private parseArgument =
+    function
+    | TextOrPath textOrPaths -> textOrPaths |> List.traverseResultM parseTextOrPath |> Result.ignore
 
-let handle (args: Arguments list) = 
+let handle (args : Arguments list) =
     result {
-        match args with 
+        match args with
         | [] -> return! Error CliError.MissingMainArgument
-        | args -> 
-            let! _ = args |> List.traverseResultM parseArgument 
-            return  
-                args
-                |> Arguments.echo
-                |> CliReport.CliReport
+        | args ->
+            let! _ = args |> List.traverseResultM parseArgument
+            return args |> Arguments.echo |> CliReport.CliReport
     }

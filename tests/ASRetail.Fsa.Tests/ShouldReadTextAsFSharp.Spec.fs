@@ -7,8 +7,8 @@ open ASRetail.Fsa.Cli.CommandHandler
 [<Fact>]
 let ``Should return an error if no arguments are provided`` () =
     let expected = CliError.MissingMainArgument |> Error
-    
-    let actual =  handle []
+
+    let actual = handle []
 
     Assert.equal expected actual
 
@@ -17,8 +17,10 @@ let ``Should return an error if no arguments are provided`` () =
 [<InlineData(null)>]
 [<InlineData("  ")>]
 let ``Should return an error if an argument is empty, whitespace or null`` argument =
-    let expected = ErrorMessages.emptyOrNullMainArgument |> CliError.InvalidMainArgument |> Error
-    let args = Arguments.TextOrPath [argument] |> List.singleton 
+    let expected =
+        ErrorMessages.emptyOrNullMainArgument |> CliError.InvalidMainArgument |> Error
+
+    let args = Arguments.TextOrPath [ argument ] |> List.singleton
 
     let actual = handle args
 
@@ -27,11 +29,9 @@ let ``Should return an error if an argument is empty, whitespace or null`` argum
 [<Fact>]
 let ``Should echo the provided argument`` () =
     let arg = "let x = 5"
-    let args = [arg] |> Arguments.TextOrPath |> List.singleton 
-    
-    let actual = 
-        handle args
-        |> Result.map (CliReport.toString)
-        |> Result.defaultValue ""
+    let args = [ arg ] |> Arguments.TextOrPath |> List.singleton
 
-    Assert.Contains(arg,actual)
+    let actual =
+        handle args |> Result.map (CliReport.toString) |> Result.defaultValue ""
+
+    Assert.Contains (arg, actual)
