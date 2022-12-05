@@ -7,6 +7,23 @@ open FsToolkit.ErrorHandling
 type Arguments = 
     | [<MainCommand>] TextOrPath of string list
 
+module Arguments = 
+    let ofArray = 
+        Option.ofObj
+        >> Option.defaultValue [||]
+        >> List.ofArray
+        >> Arguments.TextOrPath
+        >> List.singleton
+
+    let echo args =
+        let toString =
+            function
+            | TextOrPath content -> "Main Arguments:" :: content |> String.concat "\n\t"
+
+        args
+        |> List.head
+        |> toString
+
 module ErrorMessages = 
     let emptyOrNullMainArgument = "One or more of the main arguments was invalid since it was empty, null or whitespace."
 
@@ -20,7 +37,12 @@ type TextOrPath =
     | Text of string
     | Path of string    
 
-type CliReport = private CliReport of unit  
+type CliReport = private CliReport of string  
+
+module CliReport = 
+    let zero = "" |> CliReport
+
+    let toString (CliReport str) = str
 
 let private parseTextOrPath arg = 
     if arg |> String.IsNullOrWhiteSpace then 
@@ -36,9 +58,16 @@ let private parseArgument =
     | TextOrPath textOrPaths ->
         textOrPaths 
         |> List.traverseResultM parseTextOrPath
-        |> Result.map (ignore >> CliReport)
+        |> Result.ignore
 
 let handle (args: Arguments list) = 
-    match args with 
-    | [] -> Error CliError.MissingMainArgument
-    | args -> args |> List.traverseResultM parseArgument
+    result {
+        match args with 
+        | [] -> return! Error CliError.MissingMainArgument
+        | args -> 
+            let! _ = args |> List.traverseResultM parseArgument 
+            return  
+                args
+                |> Arguments.echo
+                |> CliReport.CliReport
+    }

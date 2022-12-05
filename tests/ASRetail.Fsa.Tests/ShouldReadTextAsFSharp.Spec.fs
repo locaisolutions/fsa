@@ -23,3 +23,15 @@ let ``Should return an error if an argument is empty, whitespace or null`` argum
     let actual = handle args
 
     Assert.equal expected actual
+
+[<Fact>]
+let ``Should echo the provided argument`` () =
+    let arg = "let x = 5"
+    let args = [arg] |> Arguments.TextOrPath |> List.singleton 
+    
+    let actual = 
+        handle args
+        |> Result.map (CliReport.toString)
+        |> Result.defaultValue ""
+
+    Assert.Contains(arg,actual)
