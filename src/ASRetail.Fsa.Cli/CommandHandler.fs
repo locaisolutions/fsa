@@ -4,6 +4,8 @@ open Argu
 open System
 open FsToolkit.ErrorHandling
 
+open ASRetail.Fsa.Core
+
 [<NoEquality ; NoComparison>]
 type Arguments = | [<MainCommand>] TextOrPath of string list
 
@@ -29,12 +31,8 @@ module ErrorMessages =
 [<RequireQualifiedAccess>]
 type CliError =
     | MissingMainArgument
-    | InvalidMainArgument of string
+    | InvalidMainArgument of AnalysisError
 
-type TextOrPath =
-    private
-    | Text of string
-    | Path of string
 
 type CliReport = private | CliReport of string
 
@@ -43,16 +41,13 @@ module CliReport =
 
     let toString (CliReport str) = str
 
-let private parseTextOrPath arg =
-    if arg |> String.IsNullOrWhiteSpace then
-        ErrorMessages.emptyOrNullMainArgument |> CliError.InvalidMainArgument |> Error
-
-    else
-        arg |> TextOrPath.Text |> Ok
-
 let private parseArgument =
     function
-    | TextOrPath textOrPaths -> textOrPaths |> List.traverseResultM parseTextOrPath |> Result.ignore
+    | TextOrPath textOrPaths ->
+        textOrPaths
+        |> List.traverseResultM FSharpSource.parse
+        |> Result.mapError CliError.InvalidMainArgument
+        |> Result.ignore
 
 let handle (args : Arguments list) =
     result {

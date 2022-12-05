@@ -14,7 +14,7 @@ let main args =
     let printErrors =
         function
         | CliError.InvalidMainArgument err ->
-            printfn "The main argument is not valid.\n\n Error Message: %s" err
+            printfn "The main argument is not valid.\n\n Error Message: %A" err
             1
         | CliError.MissingMainArgument ->
             printfn
