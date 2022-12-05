@@ -6,7 +6,8 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Tests.fs" />
+    <Compile Include="Assert.fs" />
+    <Compile Include="ShouldReadTextAsFSharp.Spec.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
