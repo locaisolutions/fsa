@@ -1,0 +1,9 @@
+source https://www.nuget.org/api/v2
+
+nuget Argu
+nuget coverlet.collector
+nuget Fstoolkit.ErrorHAndling
+nuget Microsoft.NET.Test.Sdk
+nuget Unquote
+nuget xunit
+nuget xunit.runner.visualstudio
