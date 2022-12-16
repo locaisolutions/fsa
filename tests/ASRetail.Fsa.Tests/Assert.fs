@@ -11,3 +11,5 @@ module Assert =
     open Swensen.Unquote
 
     let equal expected actual = test <@ expected = actual @>
+
+    let matches matcher actual = test <@ actual |> matcher @>

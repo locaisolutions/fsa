@@ -5,6 +5,11 @@ open Xunit
 open ASRetail.Fsa.Core
 open ASRetail.Fsa.Cli.CommandHandler
 
+let sourceIsInvalid =
+    function
+    | Error (CliError.InvalidMainArgument (AnalysisError.InvalidSourceCode _)) -> true
+    | _ -> false
+
 [<Fact>]
 let ``Should return an error if no arguments are provided`` () =
     let expected = CliError.MissingMainArgument |> Error
@@ -26,6 +31,15 @@ let ``Should return an error if an argument is empty, whitespace or null`` argum
     let actual = handle args
 
     Assert.equal expected actual
+
+[<Theory>]
+[<InlineData("lt a = 1 ")>]
+let ``Should return an error if the text is not valid F#`` argument =
+    let args = Arguments.TextOrPath [ argument ] |> List.singleton
+
+    let actual = handle args
+
+    Assert.matches sourceIsInvalid actual
 
 [<Fact>]
 let ``Should echo the provided argument`` () =

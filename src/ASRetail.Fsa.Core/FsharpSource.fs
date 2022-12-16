@@ -2,7 +2,9 @@ namespace ASRetail.Fsa.Core
 
 open System
 
-type AnalysisError = | EmptyOrNullSourceProvided
+type AnalysisError =
+    | EmptyOrNullSourceProvided
+    | InvalidSourceCode of string
 
 
 /// A public type for passing in the source
@@ -13,4 +15,5 @@ module FSharpSource =
     let parse =
         function
         | str when str |> String.IsNullOrWhiteSpace -> AnalysisError.EmptyOrNullSourceProvided |> Error
-        | str -> str |> FSharpSource.Text |> Ok
+        | str when str.Contains("let") -> str |> FSharpSource.Text |> Ok
+        | _ -> "Invalid F#" |> AnalysisError.InvalidSourceCode |> Error
