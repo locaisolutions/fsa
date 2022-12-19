@@ -8,13 +8,13 @@ let main args =
     let args = args |> Arguments.ofArray
 
     let printReport report =
-        printfn "%s" (report |> CliReport.toString)
+        printfn $"%s{report |> CliReport.toString}"
         0
 
     let printErrors =
         function
         | CliError.InvalidMainArgument err ->
-            printfn "The main argument is not valid.\n\n Error Message: %A" err
+            printfn $"The main argument is not valid.\n\n Error Message: %A{err}"
             1
         | CliError.MissingMainArgument ->
             printfn
